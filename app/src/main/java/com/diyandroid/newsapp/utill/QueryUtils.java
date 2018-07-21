@@ -1,7 +1,9 @@
-package com.diyandroid.newsapp;
+package com.diyandroid.newsapp.utill;
 
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.diyandroid.newsapp.News;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -84,7 +86,6 @@ public final class QueryUtils {
             }
         }
 
-        Log.d(LOG_TAG, jsonResponse);
         return jsonResponse;
     }
 

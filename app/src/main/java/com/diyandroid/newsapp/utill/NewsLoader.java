@@ -1,7 +1,9 @@
-package com.diyandroid.newsapp;
+package com.diyandroid.newsapp.utill;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+
+import com.diyandroid.newsapp.News;
 
 import java.util.List;
 
