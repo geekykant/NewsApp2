@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="pref_category_options">
+        <item>All</item>
+        <item>Business</item>
+        <item>Politics</item>
+        <item>Culture</item>
+        <item>Environment</item>
+        <item>Film</item>
+        <item>Extra</item>
+    </string-array>
+
+    <string-array name="pref_category_options_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+</resources>

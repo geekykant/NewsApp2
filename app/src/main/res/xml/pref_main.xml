@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/general">
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/select_preffered_category"
+            android:entries="@array/pref_category_options"
+            android:entryValues="@array/pref_category_options_values"
+            android:key="@string/key_news_category"
+            android:title="@string/news_category" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
