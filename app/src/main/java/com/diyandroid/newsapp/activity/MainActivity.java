@@ -30,16 +30,18 @@ import com.diyandroid.newsapp.utill.NewsLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>>, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private NewsAdapter adapter;
     private TextView mEmptyStateTextView;
 
     private static final String REQUEST_URL = "https://content.guardianapis.com";
+    private static final int NEWS_LOADER_ID = 1;
+
     private SharedPreferences prefs;
 
     private SwipeRefreshLayout swipeRefreshLayout;
-    private boolean restartBoolean = false;
+    SharedPreferences.OnSharedPreferenceChangeListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +76,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
-                restartBoolean = true;
+                getLoaderManager().destroyLoader(NEWS_LOADER_ID);
                 loadNews();
             }
         });
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        getLoaderManager().destroyLoader(NEWS_LOADER_ID);
+        loadNews();
     }
 
     private void loadNews() {
@@ -88,14 +96,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         LoaderManager loaderManager = getLoaderManager();
 
         if (networkInfo != null && networkInfo.isConnected()) {
-            int NEWS_LOADER_ID = 1;
-            if (!restartBoolean) {
-                loaderManager.initLoader(NEWS_LOADER_ID, null, this);
-            } else {
-                //restarting the loader!
-                getLoaderManager().destroyLoader(NEWS_LOADER_ID);
-                loaderManager.restartLoader(NEWS_LOADER_ID, null, this);
-            }
+            loaderManager.initLoader(NEWS_LOADER_ID, null, this);
         } else {
             View loadingIndicator = findViewById(R.id.loading_indicator);
             loadingIndicator.setVisibility(View.GONE);
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Uri baseUri = Uri.parse(REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
-        int index = Integer.parseInt(prefs.getString(getString(R.string.key_news_category), null));
+        int index = Integer.parseInt(prefs.getString(getString(R.string.key_news_category), getString(R.string.default_category)));
 
         //additional parameters
         if (index != 0) {
@@ -134,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
 
         swipeRefreshLayout.setRefreshing(false);
-        restartBoolean = false;
     }
 
     @Override
@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             case R.id.settings:
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
+                prefs.registerOnSharedPreferenceChangeListener(this);
                 return true;
         }
         return false;

@@ -13,4 +13,5 @@
     <string name="news_category">News Category</string>
     <string name="select_preffered_category">Select Preferred category</string>
     <string name="general">General</string>
+    <string name="default_category">0</string>
 </resources>
